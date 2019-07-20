@@ -1,0 +1,19 @@
+name: DustChute
+main: Deceitya\DustChute\DustChutePlugin
+version: 1.0.0
+api: 3.9.0
+
+load: POSTWORLD
+author: deceitya
+description: ゴミ箱
+website: https://github.com/deceitya/DustChute
+
+commands:
+  dustchute:
+    description: ゴミ箱を開く
+    usage: "/dustchute"
+    permission: dustchute.command.dustchute
+permissions:
+  dustchute.command.dustchute:
+    description: ゴミ箱コマンドが使えます
+    default: true
