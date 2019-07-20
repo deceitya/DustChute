@@ -40,19 +40,25 @@ class DustChutePlugin extends PluginBase implements Listener
         $nbt = Chest::createNBT($block);
         $nbt->setString("CustomName", "ゴミ箱");
         $chest = Chest::createTile(Chest::CHEST, $sender->level, $nbt);
-        $sender->addWindow($chest->getInventory());
+        $sender->addWindow(new FakeInventory($chest));
 
         return true;
     }
 
     public function onClose(InventoryCloseEvent $event)
     {
-        $player = $event->getplayer();
-        $name = $player->getName();
-        if (isset($this->real[$name])) {
-            $pos = $this->real[$name];
-            $player->level->sendBlocks([$player], [$player->level->getBlockAt($pos[0], $pos[1], $pos[2])]);
-            unset($this->real[$name]);
+        if ($event->getInventory() instanceof FakeInventory) {
+            $player = $event->getplayer();
+            $name = $player->getName();
+            if (isset($this->real[$name])) {
+                $pos = $this->real[$name];
+                $player->level->sendBlocks([$player], [$player->level->getBlockAt($pos[0], $pos[1], $pos[2])]);
+                unset($this->real[$name]);
+            }
         }
     }
+}
+
+class FakeInventory extends \pocketmine\inventory\ChestInventory
+{
 }
